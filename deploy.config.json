@@ -1,0 +1,14 @@
+{
+  "governor": {
+    "_initialProposalThreshold": 10000000000000000000000000,
+    "_initialQuorumPercentage": 5,
+    "_initialVoteExtension": 172800,
+    "_initialVotingDelay": 86400,
+    "_initialVotingPeriod": 604800,
+    "_name": "Ungovernable Governor"
+  },
+  "token": {
+    "_name": "Ungovernable",
+    "_symbol": "ABC"
+  }
+}
