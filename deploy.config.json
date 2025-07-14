@@ -5,10 +5,10 @@
     "_initialVoteExtension": 172800,
     "_initialVotingDelay": 86400,
     "_initialVotingPeriod": 604800,
-    "_name": "Ungovernable Governor"
+    "_name": "TestGovernorSepolia"
   },
   "token": {
-    "_name": "Ungovernable",
-    "_symbol": "ABC"
+    "_name": "TestTest",
+    "_symbol": "TEST"
   }
 }

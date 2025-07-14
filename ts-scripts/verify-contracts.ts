@@ -258,8 +258,8 @@ const verifyContract = async(
       contractName,
       '--compiler-version', compilerVersion,
       '--watch',
-      '--verifier', 'etherscan',
-      '--etherscan-api-key', args.etherscan,
+      '--verifier', 'custom',
+      '--verifier-url', 'https://explorer-sepolia.inkonchain.com/api',
       '--chain-id', args.chainId,
       '--rpc-url', args.rpcUrl
     ];
