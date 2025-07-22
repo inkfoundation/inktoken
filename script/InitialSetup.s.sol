@@ -7,6 +7,10 @@ import {UngovernableERC20} from "../src/UngovernableERC20.sol";
 import {UngovernableGovernor} from "../src/UngovernableGovernor.sol";
 
 contract InitialSetup is Script {
+    struct BlacklistConfig {
+        address[] blacklist;
+    }
+
     struct Config {
         GovernorConfig governor;
         MetadataConfig metadata;
@@ -35,6 +39,15 @@ contract InitialSetup is Script {
         uint256 startBlock;
     }
 
+    function getBlacklist() public view returns (address[] memory) {
+        string memory root = vm.projectRoot();
+        string memory path = string.concat(root, "/deploy.config.json");
+        string memory json = vm.readFile(path);
+        bytes memory data = vm.parseJson(json);
+        BlacklistConfig memory config = abi.decode(data, (BlacklistConfig));
+        return config.blacklist;
+    }
+
     function run() public {
         string memory root = vm.projectRoot();
         string memory path = string.concat(root, "/out/deployed.config.json");
@@ -43,8 +56,8 @@ contract InitialSetup is Script {
         Config memory config = abi.decode(data, (Config));
         address multisig_address = address(uint160(vm.envUint("MULTISIG_ADDRESS")));
         uint256 mint_amount = uint256(vm.envUint("MINT_AMOUNT"));
-
         address deployer = vm.addr(vm.envUint("PRIVATE_KEY"));
+        address[] memory blacklist = getBlacklist();
 
         // Check if DEBUG environment variable is set
         bool isDebugMode = vm.envOr("DEBUG", false);
@@ -69,16 +82,24 @@ contract InitialSetup is Script {
         console2.log("mint amount / decimals: ", mint_amount / (10 ** ungovernableERC20.decimals()));
 
 
-    vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         // Do the initial mint
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         ungovernableERC20.mint(multisig_address, mint_amount);
+        vm.stopBroadcast();
+
+        // Add all the blacklist addresses
+        for (uint256 i = 0; i < blacklist.length; i++) {
+            vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+            ungovernableERC20.setBlacklist(blacklist[i], true);
+            vm.stopBroadcast();
+        }
 
         // Whitelist the multisig for transferring tokens
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         ungovernableERC20.setWhitelist(multisig_address, true);
 
         // Transfer ownership of the token to the multisig
         ungovernableERC20.transferOwnership(multisig_address);
-
         vm.stopBroadcast();
     }
 }

@@ -8,6 +8,7 @@ import {UngovernableGovernor} from "../src/UngovernableGovernor.sol";
 
 contract Deploy is Script {
     struct Config {
+        address[] blacklist;
         GovernorConfig governor;
         TokenConfig token;
     }
