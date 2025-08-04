@@ -5,6 +5,10 @@ libs = ["lib"]
 fs_permissions = [{ access = "read-write", path = "./"}]
 evm_version = "cancun"
 optimizer_runs = 200
+ffi = true
+ast = true
+build_info = true
+extra_output = ["storageLayout"]
 
 [fuzz]
 max_test_rejects = 4294967295

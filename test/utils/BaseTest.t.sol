@@ -3,7 +3,7 @@ pragma solidity ^0.8.26;
 
 import {Test} from "forge-std/Test.sol";
 import {UngovernableGovernor} from "../../src/UngovernableGovernor.sol";
-import {UngovernableERC20} from "../../src/UngovernableERC20.sol";
+import {InkToken} from "../../src/InkToken.sol";
 import {console} from "forge-std/console.sol";
 
 interface IERC20 {
@@ -13,7 +13,7 @@ interface IERC20 {
 
 contract BaseTest is Test {
     UngovernableGovernor ungovernableGovernor;
-    UngovernableERC20 ungovernableERC20;
+    InkToken ungovernableERC20;
     Account initialOwner;
     Account admin1;
     Account admin2;
@@ -41,7 +41,7 @@ contract BaseTest is Test {
         vm.label(admin2.addr, "admin2");
 
         vm.prank(initialOwner.addr);
-        ungovernableERC20 = new UngovernableERC20("ERC20", "ABC");
+        ungovernableERC20 = new InkToken();
         ungovernableGovernor = new UngovernableGovernor(
             "Governor",
             ungovernableERC20,

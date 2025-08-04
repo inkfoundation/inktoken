@@ -43,6 +43,7 @@ const parseArgs = async (): Promise<CommandLineArgs> => {
       const key = arg.slice(2).split('=')[0];
       const value = arg.includes('=') ? arg.split('=')[1] : process.argv[++i];
       args[key as keyof CommandLineArgs] = value;
+      console.log(`Parsed argument: ${key} = ${value}`);
     }
   }
   
@@ -61,6 +62,7 @@ const parseArgs = async (): Promise<CommandLineArgs> => {
   args.target = args.target || 'latest';
   
   // If script is not provided, find the first script in the script folder
+  console.log("included args script: ", args.script)
   if (!args.script) {
     args.script = await findDefaultScript();
   }
@@ -215,7 +217,11 @@ const verifyContractsWithDeployedConfig = async () => {
     }
 
     for (const key of targetContracts) {
-      await verifyContractWithTimeout(key, deployedConfig[key].address, `${deployedConfig[key].constructorArgs.join(' ')}`, args);
+      let constructorArgs = "";
+      if (deployedConfig[key].constructorArgs != null) {
+        constructorArgs = `${deployedConfig[key].constructorArgs.join(' ')}`;
+      }
+      await verifyContractWithTimeout(key, deployedConfig[key].address, constructorArgs, args);
     }
     console.log(`${colors.green}Verification process completed!${colors.reset}`);
   } catch (error) {

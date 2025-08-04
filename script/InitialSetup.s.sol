@@ -3,7 +3,7 @@ pragma solidity ^0.8.26;
 
 import {console2} from "forge-std/console2.sol";
 import {Script} from "forge-std/Script.sol";
-import {UngovernableERC20} from "../src/UngovernableERC20.sol";
+import {InkToken} from "../src/InkToken.sol";
 import {UngovernableGovernor} from "../src/UngovernableGovernor.sol";
 
 contract InitialSetup is Script {
@@ -64,7 +64,7 @@ contract InitialSetup is Script {
             console2.log("Using mint amount: ", mint_amount);
         }
 
-        UngovernableERC20 ungovernableERC20 = UngovernableERC20(config.token._address);
+        InkToken ungovernableERC20 = InkToken(config.token._address);
         console2.log("decimals: ", ungovernableERC20.decimals());
         console2.log("mint amount / decimals: ", mint_amount / (10 ** ungovernableERC20.decimals()));
 

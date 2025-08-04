@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache 2.0
 pragma solidity ^0.8.20;
 
-import {UngovernableERC20} from "../src/UngovernableERC20.sol";
+import {InkToken} from "../src/InkToken.sol";
 import {BaseTest} from "./utils/BaseTest.t.sol";
 import {Ownable} from "solady/src/auth/Ownable.sol";
 
@@ -9,14 +9,14 @@ contract UngovernableERC20Test is BaseTest {
     function setUp() public override {
         super.setUp();
         vm.startPrank(address(1));
-        ungovernableERC20 = new UngovernableERC20("Test Token", "TKEY");
+        ungovernableERC20 = new InkToken();
         ungovernableERC20.grantRoles(admin1.addr, ungovernableERC20.DEFAULT_ADMIN_ROLE());
         vm.stopPrank();
     }
 
     function test_constructor() public {
         vm.prank(address(1));
-        ungovernableERC20 = new UngovernableERC20("Test Token", "TKEY");
+        ungovernableERC20 = new InkToken();
 
         assertEq(ungovernableERC20.owner(), address(1), "Owner should be set to address(1)");
         assertEq(ungovernableERC20.balanceOf(address(1)), 0, "Balance of owner should be 0");
@@ -43,7 +43,7 @@ contract UngovernableERC20Test is BaseTest {
         vm.prank(address(1));
         ungovernableERC20.mint(address(2), 100);
         vm.prank(address(2));
-        vm.expectRevert(UngovernableERC20.TransferPaused.selector);
+        vm.expectRevert(InkToken.TransferPaused.selector);
         ungovernableERC20.transfer(address(3), 100);
     }
 
@@ -96,7 +96,7 @@ contract UngovernableERC20Test is BaseTest {
 
     function test_setBlacklist_success() public {
         vm.expectEmit();
-        emit UngovernableERC20.Blacklist(address(2), true);
+        emit InkToken.Blacklist(address(2), true);
         vm.prank(admin1.addr);
         ungovernableERC20.setBlacklist(address(2), true);
         assertEq(ungovernableERC20.blacklist(address(2)), true, "address(2) should be blacklisted");
@@ -104,7 +104,7 @@ contract UngovernableERC20Test is BaseTest {
 
     function test_setBlacklist_owner_success() public {
         vm.expectEmit();
-        emit UngovernableERC20.Blacklist(address(2), true);
+        emit InkToken.Blacklist(address(2), true);
         vm.prank(address(1));
         ungovernableERC20.setBlacklist(address(2), true);
         assertEq(ungovernableERC20.blacklist(address(2)), true, "address(2) should be blacklisted");
@@ -112,7 +112,7 @@ contract UngovernableERC20Test is BaseTest {
 
     function test_setWhitelist_success() public {
         vm.expectEmit();
-        emit UngovernableERC20.Whitelist(address(2), true);
+        emit InkToken.Whitelist(address(2), true);
         vm.prank(admin1.addr);
         ungovernableERC20.setWhitelist(address(2), true);
         assertEq(ungovernableERC20.whitelist(address(2)), true, "address(2) should be whitelisted");
@@ -120,7 +120,7 @@ contract UngovernableERC20Test is BaseTest {
 
     function test_setWhitelist_owner_success() public {
         vm.expectEmit();
-        emit UngovernableERC20.Whitelist(address(2), true);
+        emit InkToken.Whitelist(address(2), true);
         vm.prank(address(1));
         ungovernableERC20.setWhitelist(address(2), true);
         assertEq(ungovernableERC20.whitelist(address(2)), true, "address(2) should be whitelisted");
@@ -140,19 +140,19 @@ contract UngovernableERC20Test is BaseTest {
 
     function test_transfer_revert_Blacklisted() public {
         vm.expectEmit();
-        emit UngovernableERC20.Blacklist(address(2), true);
+        emit InkToken.Blacklist(address(2), true);
         vm.prank(admin1.addr);
         ungovernableERC20.setBlacklist(address(2), true);
         vm.prank(admin1.addr);
         ungovernableERC20.enableTransfer();
         vm.prank(address(2));
-        vm.expectRevert(UngovernableERC20.Blacklisted.selector);
+        vm.expectRevert(InkToken.Blacklisted.selector);
         ungovernableERC20.transfer(address(3), 100);
     }
 
     function test_transfer_success_Whitelisted() public {
         vm.expectEmit();
-        emit UngovernableERC20.Whitelist(address(2), true);
+        emit InkToken.Whitelist(address(2), true);
         vm.prank(admin1.addr);
         ungovernableERC20.setWhitelist(address(2), true);
         vm.prank(address(1));

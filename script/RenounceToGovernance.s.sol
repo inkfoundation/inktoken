@@ -3,7 +3,7 @@ pragma solidity ^0.8.26;
 
 import {console2} from "forge-std/console2.sol";
 import {Script} from "forge-std/Script.sol";
-import {UngovernableERC20} from "../src/UngovernableERC20.sol";
+import {InkToken} from "../src/InkToken.sol";
 import {UngovernableGovernor} from "../src/UngovernableGovernor.sol";
 
 contract RenounceToGovernance is Script {
@@ -61,7 +61,7 @@ contract RenounceToGovernance is Script {
             console2.log("Using governor address:", config.governor._address);
         }
 
-        UngovernableERC20 ungovernableERC20 = UngovernableERC20(config.token._address);
+        InkToken ungovernableERC20 = InkToken(config.token._address);
         UngovernableGovernor ungovernableGovernor = UngovernableGovernor(payable(config.governor._address));
 
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));

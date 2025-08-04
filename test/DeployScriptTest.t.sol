@@ -2,13 +2,13 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {UngovernableERC20} from "../src/UngovernableERC20.sol";
+import {InkToken} from "../src/InkToken.sol";
 import {UngovernableGovernor} from "../src/UngovernableGovernor.sol";
 import "../script/Deploy.s.sol";
 
 contract DeployScriptTest is Test {
     Deploy public deployer;
-    UngovernableERC20 public token;
+    InkToken public token;
     UngovernableGovernor public governor;
     address public deployerAddress = vm.addr(vm.envUint("PRIVATE_KEY"));
 
@@ -46,7 +46,7 @@ contract DeployScriptTest is Test {
         }
 
         // Initialize contract instances with deployed addresses
-        token = UngovernableERC20(tokenAddress);
+        token = InkToken(tokenAddress);
         governor = UngovernableGovernor(payable(governorAddress));
 
         // Read and store expected values from the input deploy.config.json for assertions

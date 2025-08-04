@@ -4,13 +4,13 @@ pragma solidity ^0.8.13;
 import {Test, console} from "forge-std/Test.sol";
 import {Deploy} from "../script/Deploy.s.sol";
 import {RenounceToGovernance} from "../script/RenounceToGovernance.s.sol";
-import {UngovernableERC20} from "../src/UngovernableERC20.sol";
+import {InkToken} from "../src/InkToken.sol";
 import {UngovernableGovernor} from "../src/UngovernableGovernor.sol";
 
 contract RenounceToGovernanceScriptTest is Test {
     Deploy public deployerScript;
     RenounceToGovernance public renounceScript;
-    UngovernableERC20 public token;
+    InkToken public token;
     UngovernableGovernor public governor;
     address public deployerAddress = vm.addr(vm.envUint("PRIVATE_KEY"));
     address public initialTokenOwner;
@@ -36,7 +36,7 @@ contract RenounceToGovernanceScriptTest is Test {
         }
 
         // Initialize contract instances for testing
-        token = UngovernableERC20(tokenAddress);
+        token = InkToken(tokenAddress);
         governor = UngovernableGovernor(payable(governorAddress));
 
         // Store initial state for later assertions
@@ -91,7 +91,7 @@ contract RenounceToGovernanceScriptTest is Test {
         );
 
         // Initialize new contract instances from the debug deployment
-        UngovernableERC20 debugToken = UngovernableERC20(tokenAddress);
+        InkToken debugToken = InkToken(tokenAddress);
         UngovernableGovernor debugGovernor = UngovernableGovernor(payable(governorAddress));
         address debugInitialTokenOwner = debugToken.owner();
         assertEq(debugInitialTokenOwner, deployerAddress, "Initial token owner for debug run should be deployer");

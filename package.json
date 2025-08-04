@@ -10,6 +10,8 @@
     "deploy:prod": "ts-node ts-scripts/run-with-debug.ts deploy:prod",
     "init:test": "ts-node ts-scripts/run-with-debug.ts init:test",
     "init:prod": "ts-node ts-scripts/run-with-debug.ts init:prod",
+    "mock_upgrade:test": "ts-node ts-scripts/run-with-debug.ts mock_upgrade:test",
+    "mock_upgrade:prod": "ts-node ts-scripts/run-with-debug.ts mock_upgrade:prod",
     "verify": "dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && ts-node ts-scripts/verify-contracts.ts --chainId $CHAIN_ID --rpcUrl $RPC_URL --etherscan $ETHERSCAN_API_KEY'",
     "report": "forge coverage --no-match-test testFuzz --report lcov && perl -pi -e 's|#!/usr/bin/perl5.30|#!/usr/bin/perl|' $(which genhtml 2>/dev/null || echo /usr/local/Cellar/lcov/*/libexec/bin/genhtml) && genhtml -o report --branch-coverage lcov.info && rm lcov.info",
     "renounce:test": "ts-node ts-scripts/run-with-debug.ts renounce:test",
@@ -18,13 +20,15 @@
     "check:tally": "ts-node ts-scripts/run-with-debug.ts check:tally"
   },
   "dependencies": {
-    "@types/node": "^20.11.0",
-    "axios": "^1.6.2",
+    "@openzeppelin/contracts": "^5.4.0",
+    "@openzeppelin/contracts-upgradeable": "^5.4.0",
+    "@types/node": "^20.19.9",
+    "axios": "^1.11.0",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^8.0.0",
     "forge-verify": "^1.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3"
   },
   "scripts-comments": {
     "debug-mode": "To enable debug mode, add the --debug flag to any command. Example: 'pnpm deploy:test --debug'"

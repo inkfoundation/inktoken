@@ -32,6 +32,14 @@ const COMMANDS: CommandMap = {
     normal: "dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && forge script script/InitialSetup.s.sol --chain-id \"$CHAIN_ID\" --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast --slow'",
     debug: "DEBUG=true dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && forge script script/InitialSetup.s.sol --chain-id \"$CHAIN_ID\" --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast --slow'"
   },
+  'mock_upgrade:test': {
+    normal: "dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && forge script script/MockUpgrade.s.sol --chain-id \"$CHAIN_ID\" --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\"'",
+    debug: "DEBUG=true dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && forge script script/MockUpgrade.s.sol --chain-id \"$CHAIN_ID\" --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\"'"
+  },
+  'mock_upgrade:prod': {
+    normal: "dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && forge script script/MockUpgrade.s.sol --chain-id \"$CHAIN_ID\" --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast --slow'",
+    debug: "DEBUG=true dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && forge script script/MockUpgrade.s.sol --chain-id \"$CHAIN_ID\" --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast --slow'"
+  },
   'renounce:test': {
     normal: "dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && forge script script/RenounceToGovernance.s.sol --chain-id \"$CHAIN_ID\" --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --slow'",
     debug: "DEBUG=true dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && forge script script/RenounceToGovernance.s.sol --chain-id \"$CHAIN_ID\" --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --slow'"

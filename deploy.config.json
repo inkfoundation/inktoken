@@ -1,14 +1,9 @@
 {
-  "governor": {
-    "_initialProposalThreshold": 10000000000000000000000000,
-    "_initialQuorumPercentage": 5,
-    "_initialVoteExtension": 172800,
-    "_initialVotingDelay": 86400,
-    "_initialVotingPeriod": 604800,
-    "_name": "TestGovernorSepolia"
-  },
   "token": {
-    "_name": "TestTest",
-    "_symbol": "TEST"
+    "_name": "TestTestUUPS",
+    "_symbol": "TESTUUPS"
+  },
+  "proxy": {
+    "_address": "0x7931EfA05280a0B632Ba98Fb4A7690958d835a27"
   }
 }
