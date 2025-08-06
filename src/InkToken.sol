@@ -46,11 +46,12 @@ contract InkToken is ERC20VotesUpgradeable, OwnableUpgradeable, UUPSUpgradeable 
         _disableInitializers();
     }
 
+    /// @custom:oz-upgrades-validate-as-initializer
     function initialize(string memory _name, string memory _symbol) public reinitializer(1) {
-        __Ownable_init(msg.sender);
         __ERC20_init_unchained(_name, _symbol);
         __ERC20Votes_init_unchained();
         __EIP712_init_unchained("InkToken", "1");
+        __Ownable_init(msg.sender);
         InkTokenStorage storage $ = _getInkTokenStorage();
         $.isTransferPaused = true;
     }

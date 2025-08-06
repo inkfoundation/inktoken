@@ -1,9 +1,11 @@
 {
+  "blacklist": [
+  ],
   "token": {
     "_name": "TestTestUUPS",
     "_symbol": "TESTUUPS"
   },
   "proxy": {
-    "_address": "0x7931EfA05280a0B632Ba98Fb4A7690958d835a27"
+    "_address": ""
   }
 }

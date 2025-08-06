@@ -31,6 +31,7 @@ contract TestUpgradeERC20 is InkToken {
         _disableInitializers();
     }
 
+    /// @custom:oz-upgrades-validate-as-initializer
     function initializeV2() public reinitializer(2) {
         TestupgradeStorage storage $ = _getTestupgradeStorage();
         $.is_upgraded = true;

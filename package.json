@@ -6,18 +6,14 @@
   "scripts": {
     "setup:env": "ts-node ts-scripts/setup.ts",
     "validate:env": "dotenv -e .env -- ts-node ts-scripts/validate-env.ts",
-    "deploy:test": "ts-node ts-scripts/run-with-debug.ts deploy:test",
-    "deploy:prod": "ts-node ts-scripts/run-with-debug.ts deploy:prod",
-    "init:test": "ts-node ts-scripts/run-with-debug.ts init:test",
-    "init:prod": "ts-node ts-scripts/run-with-debug.ts init:prod",
-    "mock_upgrade:test": "ts-node ts-scripts/run-with-debug.ts mock_upgrade:test",
-    "mock_upgrade:prod": "ts-node ts-scripts/run-with-debug.ts mock_upgrade:prod",
+    "deploy:test": "forge clean && forge build && ts-node ts-scripts/run-with-debug.ts deploy:test",
+    "deploy:prod": "forge clean && forge build && ts-node ts-scripts/run-with-debug.ts deploy:prod",
+    "init:test": "forge clean && forge build && ts-node ts-scripts/run-with-debug.ts init:test",
+    "init:prod": "forge clean && forge build && ts-node ts-scripts/run-with-debug.ts init:prod",
+    "mock_upgrade:test": "forge clean && forge build && ts-node ts-scripts/run-with-debug.ts mock_upgrade:test",
+    "mock_upgrade:prod": "forge clean && forge build && ts-node ts-scripts/run-with-debug.ts mock_upgrade:prod",
     "verify": "dotenv -e .env -- bash -c 'ts-node ts-scripts/validate-env.ts && ts-node ts-scripts/verify-contracts.ts --chainId $CHAIN_ID --rpcUrl $RPC_URL --etherscan $ETHERSCAN_API_KEY'",
-    "report": "forge coverage --no-match-test testFuzz --report lcov && perl -pi -e 's|#!/usr/bin/perl5.30|#!/usr/bin/perl|' $(which genhtml 2>/dev/null || echo /usr/local/Cellar/lcov/*/libexec/bin/genhtml) && genhtml -o report --branch-coverage lcov.info && rm lcov.info",
-    "renounce:test": "ts-node ts-scripts/run-with-debug.ts renounce:test",
-    "renounce:prod": "ts-node ts-scripts/run-with-debug.ts renounce:prod",
-    "publish:tally": "ts-node ts-scripts/run-with-debug.ts publish:tally",
-    "check:tally": "ts-node ts-scripts/run-with-debug.ts check:tally"
+    "report": "forge coverage --no-match-test testFuzz --report lcov && perl -pi -e 's|#!/usr/bin/perl5.30|#!/usr/bin/perl|' $(which genhtml 2>/dev/null || echo /usr/local/Cellar/lcov/*/libexec/bin/genhtml) && genhtml -o report --branch-coverage lcov.info && rm lcov.info"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.4.0",

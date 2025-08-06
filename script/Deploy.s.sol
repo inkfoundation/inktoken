@@ -9,6 +9,7 @@ import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 contract Deploy is Script {
     struct Config {
+        address[] blacklist;
         TokenConfig token;
         ProxyConfig proxy;
     }
@@ -26,14 +27,14 @@ contract Deploy is Script {
         string memory root = vm.projectRoot();
         string memory path = string.concat(root, "/deploy.config.json");
         string memory json = vm.readFile(path);
-        bytes memory data = vm.parseJson(json);
-
-        // Decode each nested struct separately
         bytes memory tokenData = vm.parseJson(json, ".token");
         bytes memory proxyData = vm.parseJson(json, ".proxy");
+        bytes memory blacklistData = vm.parseJson(json, ".blacklist");
         TokenConfig memory tokenConfig = abi.decode(tokenData, (TokenConfig));
         ProxyConfig memory proxyConfig = abi.decode(proxyData, (ProxyConfig));
+        address[] memory blacklist = abi.decode(blacklistData, (address[]));
         Config memory config = Config({
+            blacklist: blacklist,
             token: tokenConfig,
             proxy: proxyConfig
         });
@@ -60,7 +61,6 @@ contract Deploy is Script {
         vm.stopBroadcast();
 
         string memory deployments = "deployments";
-        string memory tokenLogicJson = "token_logic";
         string memory proxyJson = "proxy";
 
         vm.serializeString(proxyJson, "_name", config.token._name);
