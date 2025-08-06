@@ -50,7 +50,7 @@ contract Deploy is Script {
         address deployer = vm.addr(vm.envUint("PRIVATE_KEY"));
         console2.log("deployer: ", deployer);
 
-        // deploy toke contract
+        // deploy token contract + proxy
         address proxy = Upgrades.deployUUPSProxy(
             "InkToken.sol",
             abi.encodeCall(InkToken.initialize, (config.token._name, config.token._symbol))

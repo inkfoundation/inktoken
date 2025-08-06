@@ -4,35 +4,20 @@ pragma solidity ^0.8.26;
 import {console2} from "forge-std/console2.sol";
 import {Script} from "forge-std/Script.sol";
 import {InkToken} from "../src/InkToken.sol";
-import {UngovernableGovernor} from "../src/UngovernableGovernor.sol";
 
 contract InitialSetup is Script {
     struct Config {
-        GovernorConfig governor;
-        MetadataConfig metadata;
         TokenConfig token;
+        ProxyConfig proxy;
     }
 
     struct TokenConfig {
-        address _address;
         string _name;
         string _symbol;
     }
 
-    struct GovernorConfig {
+    struct ProxyConfig {
         address _address;
-        uint256 _initialProposalThreshold;
-        uint256 _initialQuorumPercentage;
-        uint256 _initialVoteExtension;
-        uint256 _initialVotingDelay;
-        uint256 _initialVotingPeriod;
-        string _name;
-        address _token;
-    }
-
-    struct MetadataConfig {
-        address deployer;
-        uint256 startBlock;
     }
 
     function run() public {
@@ -52,32 +37,34 @@ contract InitialSetup is Script {
         if (isDebugMode) {
             console2.log("DEBUG MODE ENABLED");
             console2.log("deployer: ", deployer);
-            console2.log("token address: ", config.token._address);
+            console2.log("proxy address: ", config.proxy._address);
             console2.log("token name: ", config.token._name);
             console2.log("token symbol: ", config.token._symbol);
             console2.log("multisig address: ", multisig_address);
             console2.log("mint amount: ", mint_amount);
         } else {
             console2.log("deployer: ", deployer);
-            console2.log("Using token address:", config.token._address);
+            console2.log("Using proxy address:", config.proxy._address);
             console2.log("Using multisig address: ", multisig_address);
             console2.log("Using mint amount: ", mint_amount);
         }
 
-        InkToken ungovernableERC20 = InkToken(config.token._address);
-        console2.log("decimals: ", ungovernableERC20.decimals());
-        console2.log("mint amount / decimals: ", mint_amount / (10 ** ungovernableERC20.decimals()));
+        InkToken token = InkToken(config.proxy._address);
+        console2.log("decimals: ", token.decimals());
+        console2.log("mint amount / decimals: ", mint_amount / (10 ** token.decimals()));
 
 
     vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         // Do the initial mint
-        ungovernableERC20.mint(multisig_address, mint_amount);
+        token.mint(multisig_address, mint_amount);
+
+        // TODO blacklist
 
         // Whitelist the multisig for transferring tokens
-        ungovernableERC20.setWhitelist(multisig_address, true);
+        token.setWhitelist(multisig_address, true);
 
         // Transfer ownership of the token to the multisig
-        ungovernableERC20.transferOwnership(multisig_address);
+        token.transferOwnership(multisig_address);
 
         vm.stopBroadcast();
     }
