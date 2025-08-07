@@ -1,4 +1,0 @@
-- use openzepplin official function to do initial deploy
-    - we didn't properly delegate call there so that sucks
-- modify upgrade script to also verify the new contract
-- modify test cases to be actually relevant now

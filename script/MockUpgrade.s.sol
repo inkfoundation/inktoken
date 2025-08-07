@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: Apache 2.0
 pragma solidity ^0.8.26;
 
-import {console2} from "forge-std/console2.sol";
-import {Script} from "forge-std/Script.sol";
-import {InkToken} from "../src/InkToken.sol";
-import {TestUpgradeERC20} from "../src/TestUpgradeERC20.sol";
+import "../lib/openzeppelin-foundry-upgrades/src/Options.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {InkToken} from "../src/InkToken.sol";
+import {Script} from "forge-std/Script.sol";
+import {TestUpgradeERC20} from "../test/TestUpgradeERC20.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import {console2} from "forge-std/console2.sol";
 
 contract MockUpgrade is Script {
     struct Config {

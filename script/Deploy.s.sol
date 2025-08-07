@@ -56,8 +56,6 @@ contract Deploy is Script {
             "InkToken.sol",
             abi.encodeCall(InkToken.initialize, (config.token._name, config.token._symbol))
         );
-
-        // TODO set owner of initial ERC20 contract as none (NOT the proxy, we want to disable the unproxied contract)
         vm.stopBroadcast();
 
         string memory deployments = "deployments";

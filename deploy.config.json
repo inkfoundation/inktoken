@@ -2,8 +2,8 @@
   "blacklist": [
   ],
   "token": {
-    "_name": "TestTestUUPS",
-    "_symbol": "TESTUUPS"
+    "_name": "TestToken",
+    "_symbol": "TEST"
   },
   "proxy": {
     "_address": ""
