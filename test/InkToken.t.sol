@@ -7,6 +7,7 @@ import {TestUpgradeERC20} from "./TestUpgradeERC20.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 contract InkTokenTest is Test {
     InkToken token;
@@ -172,7 +173,17 @@ contract InkTokenTest is Test {
         token.initialize("InkToken", "INK");
     }
 
-    // TODO test can't call upgrade on token directly
+    function test_cant_upgrade_token_directly() public {
+        vm.startPrank(contractOwner);
+        InkToken unproxiedToken = new InkToken();
+
+        vm.expectRevert(UUPSUpgradeable.UUPSUnauthorizedCallContext.selector);
+        unproxiedToken.upgradeToAndCall(
+            address(unproxiedToken),
+            abi.encodeCall(TestUpgradeERC20.initializeV2, ())
+        );
+        vm.stopPrank();
+    }
 
     function test_upgrade() public {
         // set some state variables before the upgraded
