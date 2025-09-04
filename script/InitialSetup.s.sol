@@ -64,7 +64,7 @@ contract InitialSetup is Script {
         console2.log("mint amount / decimals: ", mint_amount / (10 ** token.decimals()));
 
 
-    vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         // blacklist each address in the blacklist
         for (uint256 i = 0; i < config.blacklist.length; i++) {
             address blacklistedAddress = config.blacklist[i];
