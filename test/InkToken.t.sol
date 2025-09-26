@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import {Test} from "forge-std/Test.sol";
 import {InkToken} from "../src/InkToken.sol";
 import {TestUpgradeERC20} from "./TestUpgradeERC20.sol";
+import {SecondTestUpgradeERC20} from "./SecondTestUpgradeERC20.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -224,5 +225,31 @@ contract InkTokenTest is Test {
         vm.expectRevert(Initializable.InvalidInitialization.selector);
         vm.prank(contractOwner);
         upgradedToken.initializeV2();
+
+        // Upgrade the contract a second time
+        vm.startPrank(contractOwner);
+        Upgrades.upgradeProxy(
+            address(token),
+            "SecondTestUpgradeERC20.sol",
+            abi.encodeCall(SecondTestUpgradeERC20.initializeV3, ())
+        );
+        vm.stopPrank();
+        SecondTestUpgradeERC20 secondUpgradedToken = SecondTestUpgradeERC20(address(token));
+
+        // Assert state hasn't changed
+        assertEq(token.name(), "InkToken");
+        assertEq(token.symbol(), "INK");
+        assertEq(token.whitelist(contractOwner), true);
+        assertEq(token.whitelist(charlie), false);
+        assertEq(token.blacklist(charlie), true);
+        assertEq(token.balanceOf(contractOwner), 900);
+        assertEq(token.balanceOf(bob), 100);
+
+        // Test old functionality still works via setting whitelist
+        vm.expectEmit();
+        emit InkToken.Whitelist(charlie, true);
+        vm.prank(contractOwner);
+        token.setWhitelist(charlie, true);
+        assertEq(token.whitelist(charlie), true, "bob should be whitelisted");
     }
 }

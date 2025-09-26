@@ -53,7 +53,7 @@ contract MockUpgrade is Script {
         address deployer = vm.addr(vm.envUint("PRIVATE_KEY"));
         console2.log("deployer: ", deployer);
 
-        // deploy toke contract
+        // upgrade token contract
         Upgrades.upgradeProxy(
             config.proxy._address,
             "TestUpgradeERC20.sol",
